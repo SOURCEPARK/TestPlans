@@ -1,6 +1,8 @@
 # Testdeskriptoren Repository
 
-In diesem Repo werden alle Testdeskriptoren gesammelt und der GUI zur weiteren Verarbeitung angeboten. Im Synaptic Ecosystem existieren aktuell drei Testinfrastrukturen auf denen Tests durchgeführt werden:
+Um eine einheitlich Sprache zu verwenden bitte für alle Begriffe das [Glossar](https://github.com/SOURCEPARK/TestPlans.git/Glossar.md) verwenden.
+
+In diesem Repo werden alle Testdeskriptoren und Testpläne gesammelt und der GUI zur weiteren Verarbeitung angeboten. Im Synaptic Ecosystem existieren aktuell drei Testinfrastrukturen auf denen Tests durchgeführt werden:
 
 - vagrant
   In diesem Setup wird Vagrant verwendet, um mit einem VM Provider (in unserem Fall VirtualBox) eine beliebig Anzahl an VMs mit Debian 12 zu starten und für die Verwendung zu konfigurieren.
