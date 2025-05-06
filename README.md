@@ -1,6 +1,6 @@
 # Testdeskriptoren Repository
 
-Um eine einheitlich Sprache zu verwenden bitte für alle Begriffe das [Glossar](https://github.com/SOURCEPARK/TestPlans.git/Glossar.md) verwenden.
+Um eine einheitlich Sprache zu verwenden bitte für alle Begriffe das [Glossar](Glossar.md) verwenden.
 
 In diesem Repo werden alle Testdeskriptoren und Testpläne gesammelt und der GUI zur weiteren Verarbeitung angeboten. Im Synaptic Ecosystem existieren aktuell drei Testinfrastrukturen auf denen Tests durchgeführt werden:
 
