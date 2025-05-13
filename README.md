@@ -1,4 +1,4 @@
-# Testdeskriptoren Repository
+# Testdeskriptoren/Testplan Repository
 
 Um eine einheitlich Sprache zu verwenden bitte für alle Begriffe das [Glossar](Glossar.md) verwenden.
 
@@ -32,6 +32,14 @@ Beispiel für einen Testdeskriptor:
 | testplan         | enthält den git URL zu einem Ordner in dem der Testplan hinterlegt ist. |
 | maxExecutionTime | ist die maximale Ausführungszeit die für diesen Testplan auf der Zielumgebung toleriert wird. |
 
+# Testpläne
 
+In diesem Repository sind Testpläne abgelegt. Die Testpläne sind ausschließlich zu Ansichtszwecken hinterlegt. Alle produktiv eingesetzten Testpläne werden aus den internen Repos der Sourcepark geladen.
 
-.... 
+Die Ordnerstruktur in der die Tespläne abgelegt sind ist mit den Testplan Repos der Sourcepark identisch. Je nach Zielsystem ist die Struktur innerhalb der Testpläne jedoch verschieden.
+
+Die folgenden Zielsysteme existieren heute:
+
+- Kubernetes - im Ordner k8s
+- Vagrant - im Ordner vagrant
+- Docker-Creator - im Ordner docker
