@@ -1,0 +1,69 @@
+{
+    "service": "FSS",
+    "days": [
+        {
+            "day":"sunday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"monday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"tuesday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"wednesday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"thursday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"friday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        },
+        {
+            "day":"saturday",
+            "switches": [ {
+              "on" : "00:00",
+              "off": "23:59",
+              "bandwidth":0
+            }
+            ]
+        }
+    ]
+}
+

@@ -1,0 +1,390 @@
+<synaptic>
+    <config>
+        <context>f003</context>
+        <netid>f003-test</netid>
+        <ports panel="30121" database="30122" node="9202"/>
+        <volumes>
+            <chart>testing-snapshot/synaptic-volumes-chart</chart>
+            <chart>stable/synaptic-volumes-chart</chart>
+        </volumes>
+    </config>
+
+    <level depth="0" name="ROOT">
+        <files>
+            <file id="config/EZDXS.properties" type="configuration"/>
+            <file id="log4j2-ezdxs.xml" type="configuration"/>
+
+            <file id="config/RIS.properties" type="configuration"/>
+            <file id="log4j-ris.properties" type="configuration"/>
+            <file id="ris/backup/__placeholder__" type="library"/>
+
+            <file id="config/HASHFS.properties" type="configuration"/>
+            <file id="log4j-hashfs.properties" type="configuration"/>
+
+            <file id="config/APGS.properties" type="configuration"/>
+            <file id="log4j-apgs.properties" type="configuration"/>
+
+            <file id="config/ENROL.properties" type="configuration"/>
+            <file id="log4j-enrollment.properties" type="configuration"/>
+
+            <file id="config/NODE.properties" type="configuration"/>
+            <file id="config/smd.properties" type="configuration"/>
+            <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+            <file id="config/chains.xml" type="configuration"/>
+            <file id="config/groupDeviceMappings.properties" type="configuration"/>
+            <file id="log4j-node.properties" type="configuration"/>
+
+            <file id="config/PANEL.properties" type="configuration"/>
+
+            <file id="certs/initial-truststore.pem" type="library"/>
+            <file id="certs/enrollment/__placeholder__" type="library"/>
+            <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+        </files>
+
+        <preconfig>            
+            <prop id="FileServerNode" add="true" value="ROOT.FASTFS1:FASTFS" file="config/EZDXS.properties"/>
+            <prop id="FileServerNode" add="true" value="ROOT.FASTFS2:FASTFS" file="config/EZDXS.properties"/>
+            <prop id="FileServerNode" add="true" value="ROOT.FASTFS3:FASTFS" file="config/EZDXS.properties"/>
+        </preconfig>
+
+        <module name="testing-snapshot/synaptic-panel" version="1.6-rc177" replica="1"/>
+        <module name="stable/synaptic-node" version="1.6.20" replica="1">
+            <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+        </module>
+        <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+        <module name="stable/synaptic-apgs" version="1.6.8" replica="1"/>
+        <module name="stable/synaptic-hashfs" version="1.6.9" replica="1"/>
+        <module name="testing/synaptic-enrollment" version="1.6-rc41" replica="1"/>
+
+        <module name="testing/synaptic-ezdxs" version="2.0-rc18" replica="1"/>
+
+
+        <level depth="1" name="FASTFS1">
+            <files>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+
+                <file id="config/FASTFS.properties" type="configuration"/>
+                <file id="log4j2-fastfs.xml" type="configuration"/>
+            </files>
+
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="testing/synaptic-fastfs" version="2.0-rc7" replica="1"/>
+        </level>
+
+        <level depth="1" name="FASTFS2">
+            <files>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+
+                <file id="config/FASTFS.properties" type="configuration"/>
+                <file id="log4j2-fastfs.xml" type="configuration"/>
+            </files>
+
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="testing/synaptic-fastfs" version="2.0-rc7" replica="1"/>
+        </level>
+
+        <level depth="1" name="FASTFS3">
+            <files>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+
+                <file id="config/FASTFS.properties" type="configuration"/>
+                <file id="log4j2-fastfs.xml" type="configuration"/>
+            </files>
+
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="testing/synaptic-fastfs" version="2.0-rc7" replica="1"/>
+        </level>
+
+
+        <level depth="1" name="SENDER1">
+            <files>
+                <file id="config/EZDXC.properties" type="configuration"/>
+                <file id="config/EZDXC_TRANSFERMAP.properties" type="configuration"/>
+                <file id="log4j-ezdxc.properties" type="configuration"/>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/HASHFS.properties" type="configuration"/>
+                <file id="log4j-hashfs.properties" type="configuration"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+            </files>
+            <preconfig>
+                <prop id="EzDexServerNode" value="#rootnode#:EZDXS" file="config/EZDXC.properties"/>
+                <prop id="log4j.appender.ROLLING.File" value="/var/log/smd/#context#/synaptic-ezdxc.log"
+                      file="log4j-ezdxc.properties"/>
+
+                <prop id="^[a-dA-D].*$" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[e-hE-H].*$" value="ROOT.RECEIVER:efgh/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[i-lI-L].*$" value="ROOT.RECEIVER:ijkl/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[m-pM-P].*$" value="ROOT.RECEIVER:qrst/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[q-tQ-T].*$" value="ROOT.RECEIVER:uvwx/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[u-xU-X].*$" value="ROOT.RECEIVER:yz/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[y-zY-Z].*$" value="ROOT.RECEIVER:rest/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id=".*" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+
+                <prop id="MonitoringPath" value="/var/lib/smd/#context#/ezdxc/spool;;:EZDXC"
+                      file="config/HASHFS.properties"/>
+                <prop id="ForcedTreeScanDelay" value="10000" file="config/HASHFS.properties"/>
+                <prop id="SkipFiles" value=".*\.nfs.*" file="config/HASHFS.properties"/>
+
+            </preconfig>
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="stable/synaptic-hashfs" version="1.6.9" replica="1"/>
+            <module name="testing/synaptic-ezdxc" version="1.6-rc38" replica="1">
+                <value id="JVMMemoryLimit" value="1024m"/>
+                <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+            </module>
+        </level>
+
+
+        <level depth="1" name="SENDER2">
+            <files>
+                <file id="config/EZDXC.properties" type="configuration"/>
+                <file id="config/EZDXC_TRANSFERMAP.properties" type="configuration"/>
+                <file id="log4j-ezdxc.properties" type="configuration"/>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/HASHFS.properties" type="configuration"/>
+                <file id="log4j-hashfs.properties" type="configuration"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+            </files>
+            <preconfig>
+                <prop id="EzDexServerNode" value="#rootnode#:EZDXS" file="config/EZDXC.properties"/>
+                <prop id="log4j.appender.ROLLING.File" value="/var/log/smd/#context#/synaptic-ezdxc.log"
+                      file="log4j-ezdxc.properties"/>
+
+                <prop id="^[a-dA-D].*$" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[e-hE-H].*$" value="ROOT.RECEIVER:efgh/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[i-lI-L].*$" value="ROOT.RECEIVER:ijkl/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[m-pM-P].*$" value="ROOT.RECEIVER:qrst/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[q-tQ-T].*$" value="ROOT.RECEIVER:uvwx/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[u-xU-X].*$" value="ROOT.RECEIVER:yz/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[y-zY-Z].*$" value="ROOT.RECEIVER:rest/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id=".*" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+
+                <prop id="MonitoringPath" value="/var/lib/smd/#context#/ezdxc/spool;;:EZDXC"
+                      file="config/HASHFS.properties"/>
+                <prop id="ForcedTreeScanDelay" value="10000" file="config/HASHFS.properties"/>
+                <prop id="SkipFiles" value=".*\.nfs.*" file="config/HASHFS.properties"/>
+
+            </preconfig>
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="stable/synaptic-hashfs" version="1.6.9" replica="1"/>
+            <module name="testing/synaptic-ezdxc" version="1.6-rc38" replica="1">
+                <value id="JVMMemoryLimit" value="1024m"/>
+                <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+            </module>
+        </level>
+
+
+        <level depth="1" name="SENDER3">
+            <files>
+                <file id="config/EZDXC.properties" type="configuration"/>
+                <file id="config/EZDXC_TRANSFERMAP.properties" type="configuration"/>
+                <file id="log4j-ezdxc.properties" type="configuration"/>
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                <file id="config/HASHFS.properties" type="configuration"/>
+                <file id="log4j-hashfs.properties" type="configuration"/>
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+            </files>
+            <preconfig>
+                <prop id="EzDexServerNode" value="#rootnode#:EZDXS" file="config/EZDXC.properties"/>
+                <prop id="log4j.appender.ROLLING.File" value="/var/log/smd/#context#/synaptic-ezdxc.log"
+                      file="log4j-ezdxc.properties"/>
+
+                <prop id="^[a-dA-D].*$" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[e-hE-H].*$" value="ROOT.RECEIVER:efgh/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[i-lI-L].*$" value="ROOT.RECEIVER:ijkl/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[m-pM-P].*$" value="ROOT.RECEIVER:qrst/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[q-tQ-T].*$" value="ROOT.RECEIVER:uvwx/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[u-xU-X].*$" value="ROOT.RECEIVER:yz/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[y-zY-Z].*$" value="ROOT.RECEIVER:rest/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id=".*" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+
+                <prop id="MonitoringPath" value="/var/lib/smd/#context#/ezdxc/spool;;:EZDXC"
+                      file="config/HASHFS.properties"/>
+                <prop id="ForcedTreeScanDelay" value="10000" file="config/HASHFS.properties"/>
+                <prop id="SkipFiles" value=".*\.nfs.*" file="config/HASHFS.properties"/>
+
+            </preconfig>
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="stable/synaptic-hashfs" version="1.6.9" replica="1"/>
+            <module name="stable/synaptic-ezdxc" version="1.6.9" replica="1">
+                <value id="JVMMemoryLimit" value="1024m"/>
+                <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+            </module>
+        </level>
+
+
+        <level depth="1" name="SENDER4">
+            <files>
+                <file id="config/EZDXC.properties" type="configuration"/>
+                <file id="config/EZDXC_TRANSFERMAP.properties" type="configuration"/>
+                <file id="log4j-ezdxc.properties" type="configuration"/>
+                <file id="ezdxc/spool/__placeholder__" type="library"/>
+                
+                <file id="config/RIS.properties" type="configuration"/>
+                <file id="log4j-ris.properties" type="configuration"/>
+                <file id="ris/backup/__placeholder__" type="library"/>
+                
+                <file id="config/HASHFS.properties" type="configuration"/>
+                <file id="log4j-hashfs.properties" type="configuration"/>
+                
+                <file id="config/NODE.properties" type="configuration"/>
+                <file id="config/smd.properties" type="configuration"/>
+                <file id="certs/initial-truststore.pem" type="library"/>
+                <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                <file id="config/chains.xml" type="configuration"/>
+                <file id="config/NODEENROL.properties" type="configuration"/>
+                <file id="log4j-node.properties" type="configuration"/>
+            </files>
+            <preconfig>
+                <prop id="MonitoringPath" value="/var/lib/smd/#context#/ezdxc/spool;;:EZDXC"
+                      file="config/HASHFS.properties"/>
+                <prop id="ForcedTreeScanDelay" value="10000" file="config/HASHFS.properties"/>
+                <prop id="SkipFiles" value=".*\.nfs.*" file="config/HASHFS.properties"/>
+
+                <prop id=".*" value="ROOT.VWVG:/" file="config/EZDXC_TRANSFERMAP.properties"/>
+
+                <prop id="EzDexServerNode" value="ROOT:EZDXS" file="config/EZDXC.properties"/>
+                <prop id="log4j.appender.ROLLING.File" value="/var/log/smd/#context#/synaptic-ezdxc.log"
+                      file="log4j-ezdxc.properties"/>
+
+                <prop id="^[a-dA-D].*$" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[e-hE-H].*$" value="ROOT.RECEIVER:efgh/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[i-lI-L].*$" value="ROOT.RECEIVER:ijkl/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[m-pM-P].*$" value="ROOT.RECEIVER:qrst/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[q-tQ-T].*$" value="ROOT.RECEIVER:uvwx/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[u-xU-X].*$" value="ROOT.RECEIVER:yz/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id="^[y-zY-Z].*$" value="ROOT.RECEIVER:rest/" file="config/EZDXC_TRANSFERMAP.properties"/>
+                <prop id=".*" value="ROOT.RECEIVER:abcd/" file="config/EZDXC_TRANSFERMAP.properties"/>
+
+                <prop id="MonitoringPath" value="/var/lib/smd/#context#/ezdxc/spool;;:EZDXC"
+                      file="config/HASHFS.properties"/>
+                <prop id="ForcedTreeScanDelay" value="10000" file="config/HASHFS.properties"/>
+                <prop id="SkipFiles" value=".*\.nfs.*" file="config/HASHFS.properties"/>
+
+            </preconfig>
+            <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+            <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+            <module name="stable/synaptic-hashfs" version="1.6.9" replica="1"/>
+            <module name="stable/synaptic-ezdxc" version="1.6.9" replica="1">
+                <value id="JVMMemoryLimit" value="1024m"/>
+                <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+            </module>
+            <settleTime>30</settleTime>
+            <postScript path="/djkdsfjklsdfjls/xxx.py">
+                <args></args>
+            </postScript>
+        </level>
+
+        <level depth="1" name="RECEIVER">
+                <files>
+                    <file id="config/EZDXC.properties" type="configuration"/>
+                    <file id="config/EZDXC_TRANSFERMAP.properties" type="configuration"/>
+                    <file id="log4j-ezdxc.properties" type="configuration"/>
+                    <file id="ezdxc/spool/__placeholder__" type="library"/>
+                    
+                    <file id="config/RIS.properties" type="configuration"/>
+                    <file id="log4j-ris.properties" type="configuration"/>
+                    <file id="ris/backup/__placeholder__" type="library"/>
+                    
+                    <file id="config/NODE.properties" type="configuration"/>
+                    <file id="config/smd.properties" type="configuration"/>
+                    <file id="certs/initial-truststore.pem" type="library"/>
+                    <file id="certs/OEM.INITIAL-cert.p12" type="library"/>
+                    <file id="config/groupDeviceMappings.properties" type="configuration"/>
+                    <file id="config/BLOCKEDLIST.lst" type="configuration"/>
+                    <file id="config/chains.xml" type="configuration"/>
+                    <file id="config/NODEENROL.properties" type="configuration"/>
+                    <file id="log4j-node.properties" type="configuration"/>
+                </files>
+                <preconfig>
+                    <prop id="EzDexServerNode" value="ROOT:EZDXS" file="config/EZDXC.properties"/>
+                    <prop id="log4j.appender.ROLLING.File" value="/var/log/smd/#context#/synaptic-ezdxc.log"
+                        file="log4j-ezdxc.properties"/>
+                </preconfig>
+                <module name="stable/synaptic-node" version="1.6.20" replica="1"/>
+                <module name="stable/synaptic-ris" version="1.6.6" replica="1"/>
+                <module name="testing/synaptic-ezdxc" version="1.6-rc38" replica="1">
+                    <value id="JVMMemoryLimit" value="1024m"/>
+                    <value id="log4j.configuration" value="/etc/smd/#instance#/log4j-#module#.properties"/>
+                </module>
+                <settleTime>30</settleTime>
+                <postScript path="/djkdsfjklsdfjls/xxx.py">
+                    <args></args>
+                </postScript>
+            </level>
+
+
+        </level>
+</synaptic>
+

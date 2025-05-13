@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chains version="1.1">
+    <inputdispatcher id="InputMessageDispatcher" class="de.sourcepark.smd.server.input.InputMessageDispatcher" timeout="10000"/>
+    <outputdispatcher id="TransferThread" class="de.sourcepark.smd.server.output.OutputDispatcherFactory" timeout="70000" />
+
+    <!--chain id="Cross-chain">
+            <input targetfilter=".*:APGS|.*:ENROL.*|.*:FSS" sourcefilter=".*:FSS" />
+            <worker id="monitoringworker" class="de.sourcepark.smd.base.processing.worker.RoutingTransferWorker" count="1" timeout="5000"/>
+    </chain-->
+
+    <!-- chain definition to avoid message overrun when addressing md5fs -->
+    <chain id="TRAP-chain">
+            <input targetfilter=".*:MD5FS" contextfilter="" />
+            <worker id="md5fsworker" class="de.sourcepark.smd.base.processing.worker.Trap" count="1" timeout="5000" />
+    </chain>
+
+    <defaultchain>
+	    <worker id="parentserver" class="de.sourcepark.smd.base.processing.worker.StrictRoutingTransferWorker" count="10" timeout="5000" />
+    </defaultchain>
+</chains>

@@ -1,0 +1,6 @@
+# This fiel contains a list of black listed nodes.
+# Every Node mentioned in this file can not connect to the synaptic network via 
+# this node.
+# Add one full qualified node identifier per line without service id to reject
+# connection attempts from this node.
+

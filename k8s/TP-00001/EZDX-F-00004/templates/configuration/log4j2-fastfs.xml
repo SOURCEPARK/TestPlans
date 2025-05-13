@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%-5p] [%d{DEFAULT}] [%t][%C - %L] - [%m]%n"/>
+    </Console>
+    <RollingFile name="RollingFile" fileName="${env:SYNAPTIC_LOGPATH}/synaptic-fastfs.log"
+	    filePattern="${SYNAPTIC_LOGPATH}/synaptic-fastfs.log.%d{yyyy-MM-dd}-%i" immediateFlush="true">
+      <PatternLayout>
+      <Pattern>[%-5p] [%d{DEFAULT}] [%t][%C - %L] - [%m]%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="RollingFile"/>
+    </Root>
+  </Loggers>
+</Configuration>
+
