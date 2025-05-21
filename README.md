@@ -22,7 +22,7 @@ Beispiel für einen Testdeskriptor:
         "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/-/tree/master/TP-00001/EZDX-F-00004",
         "maxExecutionTime": "120",
         "name": "Testname",
-        "id": "123345"
+        "id": "123345",
         "T.B.C."
     }
 }
