@@ -1,0 +1,184 @@
+package de.sourcepark.synaptic.testrunner;
+
+public class DataBox {
+
+    private static DataBox dataBox;
+    private String testRunnerIdentity;
+    private String testRunnerUrl;
+
+    private String testStatus;
+    private String testRunId;
+    private String testName;
+    private long testStartTime;
+    private int testProgress;
+    private String testErrorcode;
+    private String testErrortext;
+
+
+    private String guiServerUrl;
+    private String password;
+    private String username;
+
+
+
+    private long startTime;
+    private long heartbeatTime;
+    private long heartbeatSequence;
+    private long heartbeatInterval;
+
+
+    private DataBox() { }
+
+    public static DataBox getInstance() {
+        if (dataBox == null) {
+            dataBox = new DataBox();
+        }
+        return dataBox;
+    }
+
+    public DataBox setTestRunnerIdentity(String testRunnerIdentity) {
+        this.testRunnerIdentity = testRunnerIdentity;
+        return this;
+    }
+
+    public DataBox setTestRunnerUrl(String testRunnerUrl) {
+        this.testRunnerUrl = testRunnerUrl;
+        return this;
+    }
+
+    public DataBox setTestStatus(String testStatus) {
+        this.testStatus = testStatus;
+        return this;
+    }
+
+    public DataBox setTestRunId(String testRunId) {
+        this.testRunId = testRunId;
+        return this;
+    }
+
+    public DataBox setStartTime(long startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    public DataBox setHeartbeatTime(long heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
+        return this;
+    }
+
+    public DataBox setHeartbeatSequence(long heartbeatSequence) {
+        this.heartbeatSequence = heartbeatSequence;
+        return this;
+    }
+
+    public DataBox setHeartbeatInterval(long heartbeatInterval) {
+        this.heartbeatInterval = heartbeatInterval;
+        return this;
+    }
+
+    public DataBox setGuiServerUrl(String guiServerUrl) {
+        this.guiServerUrl = guiServerUrl;
+        return this;
+    }
+
+    public DataBox setTestName(String testName) {
+        this.testName = testName;
+        return this;
+    }
+
+    public DataBox setTestStartTime(long testStartTime) {
+        this.testStartTime = testStartTime;
+        return this;
+    }
+
+    public DataBox setTestProgress(int testProgress) {
+        this.testProgress = testProgress;
+        return this;
+    }
+
+    public DataBox setTestErrorcode(String testErrorcode) {
+        this.testErrorcode = testErrorcode;
+        return this;
+    }
+
+    public DataBox setTestErrortext(String testErrortext) {
+        this.testErrortext = testErrortext;
+        return this;
+    }
+
+    public DataBox setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public DataBox setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getTestRunnerIdentity() {
+        return testRunnerIdentity;
+    }
+
+    public String getTestRunnerUrl() {
+        return testRunnerUrl;
+    }
+
+    public String getTestStatus() {
+        return testStatus;
+    }
+
+    public String getTestRunId() {
+        return testRunId;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getHeartbeatTime() {
+        return heartbeatTime;
+    }
+
+    public long getHeartbeatSequence() {
+        return heartbeatSequence;
+    }
+
+    public long getHeartbeatInterval() {
+        return heartbeatInterval;
+
+    }
+
+    public String getGuiServerUrl() {
+        return guiServerUrl;
+    }
+
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public long getTestStartTime() {
+        return testStartTime;
+    }
+
+    public int getTestProgress() {
+        return testProgress;
+    }
+
+    public String getTestErrorcode() {
+        return testErrorcode;
+    }
+
+    public String getTestErrortext() {
+        return testErrortext;
+    }
+}

@@ -14,15 +14,14 @@ public class TestrunnerCommandApiServer {
     private final HttpServer server;
     private static final Object sem = new Object();
 
-    public TestrunnerCommandApiServer() throws IOException {
-        server = HttpServer.create(new InetSocketAddress(8000), 0);
+    public TestrunnerCommandApiServer(String address, int port) throws IOException {
+        server = HttpServer.create(new InetSocketAddress(address, port), 0);
         server.createContext("/start-test", new StartTestHandler());
         server.createContext("/restart-test", new RestartTestHandler());
         server.createContext("/stop-test", new StopTestHandler());
         server.createContext("/test-status", new TestStatusHandler());
-        System.out.println("TestrunnerCommandApiServer läuft auf Port 8000");
+        System.out.println("Is running on " + address + ":" + port);
         server.setExecutor(null);
-        server.start();
     }
 
     public void stop() throws IOException {
