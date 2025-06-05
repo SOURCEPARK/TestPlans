@@ -26,12 +26,31 @@ public class ExecuterThread extends Thread {
         this.platform = platform;
     }
 
-    private String runk8sCommand() {
+    private List<String> createk8sCommand() throws IOException, InterruptedException {
         //TODO: renew licence pack if needed
+
         //TODO: Start kubsynnet
-        //TODO: parsing and translating kubsynnet output to testrunner progress data
-        return null;
+        return List.of(KUBSYNNET_COMMAND, "-t", testDataFolder, "-H", "localhost", "-x", "accessCode", "-d");
+
+
     }
+
+    private void sendProgress(String processOutput) throws IOException {
+
+        //TODO: parsing and translating kubsynnet output to testrunner progress data
+
+        Map<String,Object> params = Map.of(
+                "runnerId", DataBox.getInstance().getTestRunnerIdentity(),
+                "testRunId", DataBox.getInstance().getTestRunId(),
+                "testName", DataBox.getInstance().getTestName(),
+                "status", DataBox.getInstance().getTestStatus(),
+                "startTime", DataBox.getInstance().getStartTime(),
+                "elapsedSeconds", "N/A",
+                "progress", DataBox.getInstance().getTestProgress()
+        );
+        Tools.sendPostRequest("/test-status", params);
+    }
+
 
     private String runProcess(List<String> commandLine, boolean hasBinaryOutput) throws IOException, InterruptedException {
 
@@ -75,6 +94,7 @@ public class ExecuterThread extends Thread {
             while ((line = reader.readLine()) != null) {
                 tempResult.append(line);
                 tempResult.append("\n");
+                sendProgress(tempResult.toString());   //FIXME: fairly inefficient
             }
             result = tempResult.toString();
         }
@@ -100,7 +120,7 @@ public class ExecuterThread extends Thread {
         } while (isProcessRunning && maxRetries > 0);
 
         if (maxRetries == 0 && isProcessRunning) {
-            LOG.error("Process does not terminate. Updater will try to kill the process now.");
+            LOG.error("Process does not terminate. Will try to kill the process now.");
             process.destroy();
         }
         LOG.info("Process completed: " + tempResult.toString());
