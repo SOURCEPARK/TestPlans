@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>de.sourcepark.synaptic:testrunnner</include>
+            </includes>
+            <outputDirectory>.</outputDirectory>
+            <outputFileNameMapping>testrunner.jar</outputFileNameMapping>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+            <outputDirectory>lib</outputDirectory>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+</assembly>

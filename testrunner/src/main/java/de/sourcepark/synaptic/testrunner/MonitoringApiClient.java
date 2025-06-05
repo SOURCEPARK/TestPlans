@@ -1,3 +1,16 @@
+/**
+ * Copyright SOURCEPARK GmbH 2021. Alle Rechte vorbehalten.
+ *
+ * SOURCEPARK GmbH Gesellschaft fuer Softwareentwicklung
+ *
+ * Hohenzollerndamm 150 Haus 7a
+ * 14199 Berlin
+ *
+ * Tel.:   +49 (0) 30 / 39 80 68 30
+ * Fax:    +49 (0) 30 / 39 80 68 39
+ * e-mail: kontakt@sourcepark.de
+ * www:    www.sourcepark.de
+ */
 package de.sourcepark.synaptic.testrunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +33,7 @@ public class MonitoringApiClient {
     private final String baseUrl;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
-    private HeartBeater heartBeater;
+    protected HeartBeater heartBeater;
 
     /**
      * Creates a new MonitoringApiClient.
@@ -121,5 +134,11 @@ public class MonitoringApiClient {
         }
     }
 
+    public void stop() {
+        heartBeater.stopExecution();
+    }
 
+    public void join() throws InterruptedException {
+        heartBeater.join();
+    }
 }

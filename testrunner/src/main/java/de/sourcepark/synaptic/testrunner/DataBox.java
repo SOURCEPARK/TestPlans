@@ -1,3 +1,16 @@
+/**
+ * Copyright SOURCEPARK GmbH 2021. Alle Rechte vorbehalten.
+ * <p>
+ * SOURCEPARK GmbH Gesellschaft fuer Softwareentwicklung
+ * <p>
+ * Hohenzollerndamm 150 Haus 7a
+ * 14199 Berlin
+ * <p>
+ * Tel.:   +49 (0) 30 / 39 80 68 30
+ * Fax:    +49 (0) 30 / 39 80 68 39
+ * e-mail: kontakt@sourcepark.de
+ * www:    www.sourcepark.de
+ */
 package de.sourcepark.synaptic.testrunner;
 
 public class DataBox {
@@ -6,11 +19,11 @@ public class DataBox {
     private String testRunnerIdentity;
     private String testRunnerUrl;
 
-    private String testStatus;
-    private String testRunId;
-    private String testName;
-    private long testStartTime;
-    private int testProgress;
+    private String testStatus = "IDLE";
+    private String testRunId = "NOT_YET_SET";
+    private String testName = "NOT_YET_SET";
+    private long testStartTime = 0;
+    private double testProgress = 0.0;
     private String testErrorcode;
     private String testErrortext;
 
@@ -19,7 +32,7 @@ public class DataBox {
     private String password;
     private String username;
 
-
+    private String runningTestPlan;
 
     private long startTime;
     private long heartbeatTime;
@@ -27,7 +40,8 @@ public class DataBox {
     private long heartbeatInterval;
 
 
-    private DataBox() { }
+    private DataBox() {
+    }
 
     public static DataBox getInstance() {
         if (dataBox == null) {
@@ -170,7 +184,7 @@ public class DataBox {
         return testStartTime;
     }
 
-    public int getTestProgress() {
+    public double getTestProgress() {
         return testProgress;
     }
 
