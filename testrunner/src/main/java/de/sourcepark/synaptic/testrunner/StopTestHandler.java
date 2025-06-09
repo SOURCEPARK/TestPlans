@@ -29,13 +29,28 @@ class StopTestHandler extends AbstractHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-            String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("/stop-test aufgerufen. Body: " + body);
-            String response = "{\"testRunId\":\"run-2025-05-09-001\",\"message\":\"Test erfolgreich gestoppt\"}";
-            sendJsonResponse(exchange, 200, response);
+        if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            String testRunId = exchange.getRequestURI().getPath().substring(11);
+            if (testRunId.equals(DataBox.getInstance().getTestRunId())) {
+
+                //TODO: terminate test run
+
+                DataBox.getInstance().setTestStatus("STOPPED");
+                String response = "{\"testRunId\":\"" + DataBox.getInstance().getTestRunId() +
+                        "\",\"message\":\"Test gestoppt\"}";
+                sendJsonResponse(exchange, 200, response);
+            }
+            else {
+                sendJsonResponse(exchange, 404, "{\"errortext\":\"Test ["+testRunId+"] nicht gefunden\"," +
+                        "\"errorcode\":\"404\"," +
+                        "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
+                        "\"message\":\"Test restart failed\"}");
+            }
         } else {
-            sendJsonResponse(exchange, 400, "{\"error\":\"Ungültige Anfrage\"}");
+            sendJsonResponse(exchange, 500, "{\"errortext\":\"Unsupported request type\"," +
+                    "\"errorcode\":\"500\"," +
+                    "\"testRunId\":\" N/A \"," +
+                    "\"message\":\"Test restart failed\"}");
         }
     }
 }

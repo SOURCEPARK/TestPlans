@@ -37,8 +37,11 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
         if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
 
             if (DataBox.getInstance().getTestStatus().equals("RUNNING")) {
-                sendJsonResponse(exchange, 500, "{\"error\":\"This instance can only run one test. " +
-                        "Test ["+DataBox.getInstance().getTestRunId()+"] is already running\"}");
+                sendJsonResponse(exchange, 404, "{\"errortext\":\"This instance can only run one test.\"," +
+                        "\"errorcode\":\"404\"," +
+                        "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
+                        "\"message\":\"Test ["+DataBox.getInstance().getTestRunId()+"] is actually running\"}");
+
                 return;
             }
 
@@ -65,6 +68,10 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
             if (!checkoutSuccess) {
                 System.out.println("Failed to checkout repository");
                 sendJsonResponse(exchange, 500, "{\"error\":\"Failed to checkout repository\"}");
+                sendJsonResponse(exchange, 501, "{\"errortext\":\"Failed to checkout repository.\"," +
+                        "\"errorcode\":\"501\"," +
+                        "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
+                        "\"message\":\"\"Test start failed. Unable to checkout repository\"}");
                 return;
             }
 
@@ -82,7 +89,10 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
 
             sendJsonResponse(exchange, 200, response);
         } else {
-            sendJsonResponse(exchange, 400, "{\"error\":\"Invalid request\"}");
+            sendJsonResponse(exchange, 500, "{\"errortext\":\"Unsupported request type\"," +
+                    "\"errorcode\":\"500\"," +
+                    "\"testRunId\":\" N/A \"," +
+                    "\"message\":\"Test restart failed\"}");
         }
     }
 }

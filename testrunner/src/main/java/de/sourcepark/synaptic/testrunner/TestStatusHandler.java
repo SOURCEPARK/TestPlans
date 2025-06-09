@@ -26,9 +26,9 @@ class TestStatusHandler extends AbstractHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
-            String query = exchange.getRequestURI().getQuery();
+            String query = exchange.getRequestURI().getPath();
             System.out.println("/test-status requested. Query: " + query);
-            String runId = query.substring(10);
+            String runId = query.substring(13);
             if (runId != null && runId.equals(DataBox.getInstance().getTestRunId())) {
                 String response = "{\"runnerId\":\"" + DataBox.getInstance().getTestRunnerIdentity() +
                         "\",\"testRunId\":\"" + DataBox.getInstance().getTestRunId() +
