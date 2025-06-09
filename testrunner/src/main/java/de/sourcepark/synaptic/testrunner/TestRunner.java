@@ -59,6 +59,9 @@ public class TestRunner {
         options.addOption("c", "credentials", true,
                 "Credentials for the git repository access. Username and Password separated by colon " +
                         "(no spaces allowed).");
+        options.addOption("g", "git-checkout-folder", true,
+                "Folder where the Testplans will be checked out. " +
+                        "(no spaces allowed).");
 
 
         CommandLineParser parser = new BasicParser();
@@ -89,12 +92,16 @@ public class TestRunner {
         }
 
         if (cmd.hasOption("c")) {
-            String parts[] = cmd.getOptionValue("c").split(":");
+            String[] parts = cmd.getOptionValue("c").split(":");
             DataBox.getInstance().setUsername(parts[0]);
             DataBox.getInstance().setPassword(parts[1]);
         }
+        if (cmd.hasOption("g")) {
+            DataBox.getInstance().setGitCheckoutFolder(cmd.getOptionValue("g"));
+        }
 
-        try {
+
+            try {
             DataBox.getInstance().setTestRunnerIdentity(identity)
                     .setTestStatus("IDLE")
                     .setHeartbeatSequence(0)

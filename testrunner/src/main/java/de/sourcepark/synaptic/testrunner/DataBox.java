@@ -26,6 +26,7 @@ public class DataBox {
     private double testProgress = 0.0;
     private String testErrorcode;
     private String testErrortext;
+    private String gitCheckoutFolder="/tmp";
 
 
     private String guiServerUrl;
@@ -194,5 +195,13 @@ public class DataBox {
 
     public String getTestErrortext() {
         return testErrortext;
+    }
+
+    public String getGitCheckoutFolder() {
+        return gitCheckoutFolder;
+    }
+
+    public void setGitCheckoutFolder(String gitCheckoutFolder) {
+        this.gitCheckoutFolder = gitCheckoutFolder;
     }
 }

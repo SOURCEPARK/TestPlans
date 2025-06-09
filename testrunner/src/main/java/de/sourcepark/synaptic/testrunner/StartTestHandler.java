@@ -60,7 +60,7 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
             // HTTP authentication (username/password)
             checkoutSuccess = gitHandler.checkoutRepositoryWithCredentials(
                     parts[0],
-                    "/Users/barmeier/Temp/test-repo",
+                    DataBox.getInstance().getGitCheckoutFolder(),
                     DataBox.getInstance().getUsername(),
                     DataBox.getInstance().getPassword()
             );
@@ -74,6 +74,9 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
                         "\"message\":\"\"Test start failed. Unable to checkout repository\"}");
                 return;
             }
+
+            //TODO: check if test case is present in checked out repository
+
 
             //TODO: Run external testing thread
 

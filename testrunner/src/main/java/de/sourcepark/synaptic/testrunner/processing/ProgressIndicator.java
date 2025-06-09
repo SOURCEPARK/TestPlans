@@ -11,16 +11,9 @@
  * e-mail: kontakt@sourcepark.de
  * www:    www.sourcepark.de
  */
-package de.sourcepark.synaptic.testrunner;
+package de.sourcepark.synaptic.testrunner.processing;
 
-public class ExecuterController extends Thread {
+public interface ProgressIndicator {
 
-    @Override
-    public void run() {
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public TestState parse(String processOutput);
 }
