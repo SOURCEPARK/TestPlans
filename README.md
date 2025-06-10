@@ -19,7 +19,7 @@ Beispiel für einen Testdeskriptor:
 {
     "testdescriptor": {
         "platforms": ["k8s","docker","vagrant"],
-        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/-/tree/master/TP-00001/EZDX-F-00004",
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00001/EZDX-F-00004",
         "maxExecutionTime": "120",
         "name": "Testname",
         "id": "123345",
@@ -31,7 +31,7 @@ Beispiel für einen Testdeskriptor:
 | Attribut         | Beschreibung                                                 |
 | ---------------- | ------------------------------------------------------------ |
 | platforms        | beschreibt die Plattformen auf denen der referenzierte Testplan ausgeführt werden kann. |
-| testplan         | enthält den git URL zu einem Ordner in dem der Testplan hinterlegt ist. |
+| testplan         | enthält den git URL zu einem Ordner in dem der Testplan hinterlegt ist. Optional kann ein # Zeichen verwendet werden, um spezifische Pfadanteile im Repository vom Repository URL zu trennen. Die Verantwortung zum korrektun Umgang mit diesen Pfaden liegt im Testrunner|
 | maxExecutionTime | ist die maximale Ausführungszeit die für diesen Testplan auf der Zielumgebung toleriert wird. |
 
 # Testpläne
