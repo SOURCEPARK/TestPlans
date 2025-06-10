@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class ExecuterThread extends Thread {
 
-    public static String KUBSYNNET_COMMAND = "/usr/share/synaptic-kubsynnet/kubsynnet";
+    public static String KUBSYNNET_COMMAND = "/usr/bin/kubsynnet";
 
     private final static Logger LOG = LogManager.getLogger(ExecuterThread.class);
     private final String testDataFolder;
@@ -53,26 +53,36 @@ public class ExecuterThread extends Thread {
         //TODO: renew licence pack if needed
 
         //TODO: Start kubsynnet
-        return List.of(KUBSYNNET_COMMAND, "-t", testDataFolder, "-H", "localhost", "-x", "accessCode", "-d");
+        String dataFolder = DataBox.getInstance().getGitCheckoutFolder()+testDataFolder;
+        String licenceKey = System.getenv("LICENCE_KEY");
+        if (licenceKey == null) {
+            licenceKey="NOT_SET";
+        }
+        return List.of(KUBSYNNET_COMMAND, "create", "-t", dataFolder, "-H", "localhost", "-x", licenceKey);
 
+    }
+
+    private void sendProgressPostRequest(String message) throws IOException {
+        int elapsedSeconds = (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
+        Map<String, Object> params = Map.of(
+                "runnerId", DataBox.getInstance().getTestRunnerIdentity(),
+                "testRunId", DataBox.getInstance().getTestRunId(),
+                "testName", DataBox.getInstance().getTestName(),
+                "status", DataBox.getInstance().getTestStatus(),
+                "startTime", DataBox.getInstance().getStartTime(),
+                "elapsedSeconds", String.valueOf(elapsedSeconds),
+                "message", message,
+                "progress", DataBox.getInstance().getTestProgress()
+        );
+        Tools.sendPostRequest("/test-status", params);
     }
 
     private void sendProgress(String processOutput) throws IOException {
 
         //TODO: parsing and translating kubsynnet output to testrunner progress data
         TestState ts = progressIndicator.parse(processOutput);
-        int elapsedSeconds = (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
         if (ts != null && ts.progress <= 1.0 ) {
-            Map<String, Object> params = Map.of(
-                    "runnerId", DataBox.getInstance().getTestRunnerIdentity(),
-                    "testRunId", DataBox.getInstance().getTestRunId(),
-                    "testName", DataBox.getInstance().getTestName(),
-                    "status", DataBox.getInstance().getTestStatus(),
-                    "startTime", DataBox.getInstance().getStartTime(),
-                    "elapsedSeconds", String.valueOf(elapsedSeconds),
-                    "progress", DataBox.getInstance().getTestProgress()
-            );
-            Tools.sendPostRequest("/test-status", params);
+            sendProgressPostRequest(ts.message);
         }
     }
 
@@ -95,6 +105,7 @@ public class ExecuterThread extends Thread {
 
         Map<String, String> env = builder.environment();
         env.put("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+        env.put("PYTHONUNBUFFERED", "1");  // Wichtig: Deaktiviert die Python-Ausgabepufferung
 
         Process process = builder.start();
         String line;
@@ -117,8 +128,9 @@ public class ExecuterThread extends Thread {
 
             while ((line = reader.readLine()) != null) {
                 tempResult.append(line);
+                System.out.println("  --- " + line);
                 tempResult.append("\n");
-                sendProgress(tempResult.toString());   //FIXME: fairly inefficient
+                sendProgress(line);   //FIXME: fairly inefficient
             }
             result = tempResult.toString();
         }
@@ -131,6 +143,11 @@ public class ExecuterThread extends Thread {
         do {
             try {
                 exitCode = process.exitValue();
+                if (exitCode != 0) {
+                    DataBox.getInstance().setTestStatus("FAILED");
+                } else {
+                    DataBox.getInstance().setTestStatus("COMPLETED");
+                }
                 isProcessRunning = false;
             } catch (IllegalThreadStateException ex) {
                 LOG.info("Process not terminated. Waiting ...");
@@ -154,13 +171,26 @@ public class ExecuterThread extends Thread {
 
     @Override
     public void run() {
+        String message ="Test executor thread completed.";
         try {
+
             List<String> commandLine = createk8sCommand();
             runProcess(commandLine, false);
         } catch (InterruptedException e) {
             LOG.error("Thread interrupted.", e);
+            message = "Thread interrupted.";
+            DataBox.getInstance().setTestStatus("FAILED");
         } catch (Throwable e) {
+            message = "Unexpected exception: " + e.getMessage();
             LOG.error("Unexpected exception.", e);
+            DataBox.getInstance().setTestStatus("FAILED");
+        } finally {
+            DataBox.getInstance().setTestProgress(1.0);
+            try {
+                sendProgressPostRequest(message);
+            } catch (IOException e) {
+                LOG.error("Failed to send progress.", e);
+            }
         }
     }
 }

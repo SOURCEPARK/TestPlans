@@ -106,7 +106,7 @@ public class DataBox {
         return this;
     }
 
-    public DataBox setTestProgress(int testProgress) {
+    public DataBox setTestProgress(double testProgress) {
         this.testProgress = testProgress;
         return this;
     }

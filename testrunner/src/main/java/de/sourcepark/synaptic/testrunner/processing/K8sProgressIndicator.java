@@ -13,29 +13,32 @@
  */
 package de.sourcepark.synaptic.testrunner.processing;
 
+import de.sourcepark.synaptic.testrunner.DataBox;
+
 public class K8sProgressIndicator implements ProgressIndicator {
 
 
     @Override
     public TestState parse(String processOutput) {
         String message = "";
-        TestState ts = new TestState();
+        TestState ts = null;
 
         if (processOutput.trim().startsWith("+++")) {
             // extract message
-            message = processOutput.trim().substring(3);
+            ts = new TestState();
+            ts.message = processOutput.trim().substring(3);
             // calculate progress
 
         } else if (processOutput.trim().startsWith("###")) {
             // extract message
+            ts = new TestState();
             message = processOutput.trim().substring(3);
             ts.status = "FAILED";
-            ts.progress = 1.0;
+            DataBox.getInstance().setTestProgress(1.0);
             ts.message = message;
 
         }
 
-
-        return null;
+        return ts;
     }
 }

@@ -16,6 +16,7 @@ package de.sourcepark.synaptic.testrunner;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import de.sourcepark.synaptic.testrunner.processing.ExecuterThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,7 +80,8 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
 
 
             //TODO: Run external testing thread
-
+            ExecuterThread executerThread = new ExecuterThread(request.platforms[0], parts[1]);
+            executerThread.start();
 
             System.out.println("/start-test aufgerufen. Body: " + body);
             String uuid = UUID.randomUUID().toString();
