@@ -13,11 +13,14 @@
  */
 package de.sourcepark.synaptic.testrunner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 public class HeartBeater extends Thread {
-
+    private static final Logger LOG = LogManager.getLogger(HeartBeater.class);
     long heartbeatInterval;
 
     public HeartBeater(long heartbeatInterval) {
@@ -60,10 +63,13 @@ public class HeartBeater extends Thread {
                 Thread.sleep(heartbeatInterval*1000 ); // Sleep for 1 second
                 DataBox.getInstance().setHeartbeatTime(System.currentTimeMillis());
                 DataBox.getInstance().setHeartbeatSequence(DataBox.getInstance().getHeartbeatSequence() + 1);
-                sendHeartbeat(OffsetDateTime.now(), DataBox.getInstance().getTestRunnerIdentity(),
+                if (!sendHeartbeat(OffsetDateTime.now(), DataBox.getInstance().getTestRunnerIdentity(),
                         DataBox.getInstance().getTestStatus(),
                         (int) DataBox.getInstance().getHeartbeatSequence(),
-                        (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000));
+                        (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000))) {
+                    LOG.error("Failed to send heartbeat. Stopping heartbeat thread.");
+                    return;
+                }
             } catch (InterruptedException e) {
                 return;
             }

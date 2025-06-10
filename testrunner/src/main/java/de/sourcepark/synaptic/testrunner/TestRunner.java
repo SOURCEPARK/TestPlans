@@ -40,6 +40,8 @@ public class TestRunner {
     public static void main(String[] args) throws ParseException {
         TestrunnerCommandApiServer server=null;
         MonitoringApiClient apiClient = null;
+        HeartBeater heartBeater = null;
+
         Options options = new Options();
         options.addOption("b", "heartbeat-interval", true,
                 "Heartbeat interval in seconds (default = 60).");
@@ -111,7 +113,10 @@ public class TestRunner {
             server = new TestrunnerCommandApiServer(bindAddress, bindPort);
             server.start();
             apiClient = new MonitoringApiClient(guiServerUrl);
-            apiClient.registerRunner(identity, "http://" + dnsServerName + ":" + bindPort, platforms);
+            if (!apiClient.registerRunner(identity, "http://" + dnsServerName + ":" + bindPort, platforms)) {
+                LOG.error("Failed to register testrunner at "+ guiServerUrl);
+                return;
+            }
             apiClient.join();
         } catch (IOException e) {
             throw new RuntimeException(e);

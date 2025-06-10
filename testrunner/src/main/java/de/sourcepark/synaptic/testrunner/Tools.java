@@ -21,13 +21,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class Tools {
 
-
+    private static final Logger logger = LogManager.getLogger(MonitoringApiClient.class);
     /**
      * Helper method to send POST requests to the API.
      *
