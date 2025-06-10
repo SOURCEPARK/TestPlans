@@ -31,7 +31,7 @@ Beispiel für einen Testdeskriptor:
 | Attribut         | Beschreibung                                                 |
 | ---------------- | ------------------------------------------------------------ |
 | platforms        | beschreibt die Plattformen auf denen der referenzierte Testplan ausgeführt werden kann. |
-| testplan         | enthält den git URL zu einem Ordner in dem der Testplan hinterlegt ist. Optional kann ein # Zeichen verwendet werden, um spezifische Pfadanteile im Repository vom Repository URL zu trennen. Dir Verantwortung zum korrektun Umgang mit diesen Pfaden liegt im Testrunner|
+| testplan         | enthält den git URL zu einem Ordner in dem der Testplan hinterlegt ist. Optional kann ein # Zeichen verwendet werden, um spezifische Pfadanteile im Repository vom Repository URL zu trennen. Die Verantwortung zum korrektun Umgang mit diesen Pfaden liegt im Testrunner|
 | maxExecutionTime | ist die maximale Ausführungszeit die für diesen Testplan auf der Zielumgebung toleriert wird. |
 
 # Testpläne
