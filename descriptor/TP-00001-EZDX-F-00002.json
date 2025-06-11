@@ -1,0 +1,11 @@
+{
+    "testdescriptor": {
+        "platforms": [
+            "k8s"
+        ],
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00001/EZDX-F-00002",
+        "maxExecutionTime": "120",
+        "name": "TP-00001-EZDX-F-00002",
+        "id": "758df5d1-4a7c-472f-b353-263e0ec4b89b"
+    }
+}

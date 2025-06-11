@@ -45,7 +45,7 @@ public class MonitoringApiClient {
         this.httpClient = HttpClients.createDefault();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
-        heartBeater = new HeartBeater(60);
+        heartBeater = new HeartBeater(61);
         heartBeater.start();
     }
 
@@ -127,7 +127,7 @@ public class MonitoringApiClient {
                 "platforms", platforms
             );
 
-            return Tools.sendPostRequest("/register-runner", registerRunner);
+            return Tools.sendPostRequest("/test-runner/register", registerRunner);
         } catch (Exception e) {
             logger.error("Failed to register runner", e);
             return false;

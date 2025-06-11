@@ -20,6 +20,7 @@ public class DataBox {
     private String testRunnerUrl;
 
     private String testStatus = "IDLE";
+    private String testRunnerStatus = "IDLE";
     private String testRunId = "NOT_YET_SET";
     private String testName = "NOT_YET_SET";
     private long testStartTime = 0;
@@ -203,5 +204,13 @@ public class DataBox {
 
     public void setGitCheckoutFolder(String gitCheckoutFolder) {
         this.gitCheckoutFolder = gitCheckoutFolder;
+    }
+
+    public String getTestRunnerStatus() {
+        return testRunnerStatus;
+    }
+
+    public void setTestRunnerStatus(String testRunnerStatus) {
+        this.testRunnerStatus = testRunnerStatus;
     }
 }

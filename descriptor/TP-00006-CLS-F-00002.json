@@ -1,0 +1,11 @@
+{
+    "testdescriptor": {
+        "platforms": [
+            "k8s"
+        ],
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00006/CLS-F-00002",
+        "maxExecutionTime": "120",
+        "name": "TP-00006-CLS-F-00002",
+        "id": "115a957b-e4c0-4379-a853-2c4e654762a0"
+    }
+}

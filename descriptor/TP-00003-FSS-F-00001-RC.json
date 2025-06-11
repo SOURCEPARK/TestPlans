@@ -1,0 +1,11 @@
+{
+    "testdescriptor": {
+        "platforms": [
+            "k8s"
+        ],
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00003/FSS-F-00001-RC",
+        "maxExecutionTime": "120",
+        "name": "TP-00003-FSS-F-00001-RC",
+        "id": "20b2b8ad-dffb-4201-9105-ab887ab3d87c"
+    }
+}

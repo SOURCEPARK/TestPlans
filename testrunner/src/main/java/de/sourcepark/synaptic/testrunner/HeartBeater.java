@@ -48,7 +48,7 @@ public class HeartBeater extends Thread {
                     "uptimeSeconds", uptimeSeconds != null ? uptimeSeconds : 0
             );
 
-            return Tools.sendPostRequest("/heartbeat", heartbeat);
+            return Tools.sendPostRequest("/test-runner/heartbeat", heartbeat);
         } catch (Exception e) {
             System.out.println("Failed to send heartbeat");
             return false;
@@ -64,7 +64,7 @@ public class HeartBeater extends Thread {
                 DataBox.getInstance().setHeartbeatTime(System.currentTimeMillis());
                 DataBox.getInstance().setHeartbeatSequence(DataBox.getInstance().getHeartbeatSequence() + 1);
                 if (!sendHeartbeat(OffsetDateTime.now(), DataBox.getInstance().getTestRunnerIdentity(),
-                        DataBox.getInstance().getTestStatus(),
+                        DataBox.getInstance().getTestRunnerStatus(),
                         (int) DataBox.getInstance().getHeartbeatSequence(),
                         (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000))) {
                     LOG.error("Failed to send heartbeat. Stopping heartbeat thread.");

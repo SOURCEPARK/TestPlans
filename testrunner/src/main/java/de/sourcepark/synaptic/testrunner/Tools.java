@@ -55,6 +55,6 @@ public class Tools {
         // Ensure the response entity is consumed
         EntityUtils.consume(response.getEntity());
 
-        return statusCode == 200;
+        return statusCode <= 399;
     }
 }

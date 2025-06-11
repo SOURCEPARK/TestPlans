@@ -1,0 +1,11 @@
+{
+    "testdescriptor": {
+        "platforms": [
+            "k8s"
+        ],
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00008/NODE-F-00002",
+        "maxExecutionTime": "120",
+        "name": "TP-00008-NODE-F-00002",
+        "id": "36867d9e-96b1-4ad2-9880-06cb0bd28fd5"
+    }
+}
