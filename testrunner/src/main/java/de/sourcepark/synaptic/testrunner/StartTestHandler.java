@@ -91,6 +91,7 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
             DataBox.getInstance().setTestName(parts[1]);
             DataBox.getInstance().setTestStartTime(System.currentTimeMillis());
             DataBox.getInstance().setTestStatus("RUNNING");
+            DataBox.getInstance().setTestRunnerStatus("RUNNING");
 
             sendJsonResponse(exchange, 200, response);
         } else {

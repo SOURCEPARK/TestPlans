@@ -15,6 +15,7 @@ package de.sourcepark.synaptic.testrunner;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import de.sourcepark.synaptic.testrunner.processing.ExecuterThread;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,9 +33,7 @@ class StopTestHandler extends AbstractHandler implements HttpHandler {
         if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             String testRunId = exchange.getRequestURI().getPath().substring(11);
             if (testRunId.equals(DataBox.getInstance().getTestRunId())) {
-
-                //TODO: terminate test run
-
+                ExecuterThread.setProcessRunning(false);
                 DataBox.getInstance().setTestStatus("STOPPED");
                 String response = "{\"testRunId\":\"" + DataBox.getInstance().getTestRunId() +
                         "\",\"message\":\"Test gestoppt\"}";

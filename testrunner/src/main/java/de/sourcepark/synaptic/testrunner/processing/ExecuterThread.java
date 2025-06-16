@@ -30,11 +30,13 @@ import java.util.Map;
 public class ExecuterThread extends Thread {
 
     public static String KUBSYNNET_COMMAND = "/usr/bin/kubsynnet";
+    private static boolean PROCESS_RUNNING = true;
 
     private final static Logger LOG = LogManager.getLogger(ExecuterThread.class);
     private final String testDataFolder;
     private final String platform;
     private final ProgressIndicator progressIndicator;
+
 
     public ExecuterThread(String platform, String testDataFolder) {
         super("ExecuterThread");
@@ -47,6 +49,10 @@ public class ExecuterThread extends Thread {
             default:
                 this.progressIndicator = null;
         }
+    }
+
+    public static void setProcessRunning(boolean processRunning) {
+        PROCESS_RUNNING = processRunning;
     }
 
     private List<String> createk8sCommand() {
@@ -126,13 +132,17 @@ public class ExecuterThread extends Thread {
         } else {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
 
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null && PROCESS_RUNNING) {
                 tempResult.append(line);
                 System.out.println("  --- " + line);
                 tempResult.append("\n");
                 sendProgress(line);   //FIXME: fairly inefficient
             }
             result = tempResult.toString();
+        }
+
+        if (!PROCESS_RUNNING) {
+            process.destroy();
         }
 
         boolean isProcessRunning = true;
