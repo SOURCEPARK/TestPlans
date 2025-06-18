@@ -50,7 +50,7 @@ public class HeartBeater extends Thread {
 
             return Tools.sendPostRequest("/test-runner/heartbeat", heartbeat);
         } catch (Exception e) {
-            System.out.println("Failed to send heartbeat");
+            LOG.error("Failed to send heartbeat", e);
             return false;
         }
     }
@@ -67,8 +67,8 @@ public class HeartBeater extends Thread {
                         DataBox.getInstance().getTestRunnerStatus(),
                         (int) DataBox.getInstance().getHeartbeatSequence(),
                         (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000))) {
-                    LOG.error("Failed to send heartbeat. Stopping heartbeat thread.");
-                    return;
+                    //LOG.error("Failed to send heartbeat. Stopping heartbeat thread.");
+                    //return;
                 }
             } catch (InterruptedException e) {
                 return;
