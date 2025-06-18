@@ -13,16 +13,31 @@
  */
 package de.sourcepark.synaptic.testrunner;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public abstract class AbstractHandler {
+    private final static Logger LOG = LogManager.getLogger(AbstractHandler.class);
+
+    public static String prettyPrintJsonString(String json) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Object jsonObject = mapper.readValue(json, Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+        } catch (Exception e) {
+            return "JSON Error: " + e.getMessage();
+        }
+    }
 
     public static void sendJsonResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
-
+        LOG.info("Sending response: " + prettyPrintJsonString(response));
         exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
         exchange.sendResponseHeaders(statusCode, response.getBytes(StandardCharsets.UTF_8).length);
         try (OutputStream os = exchange.getResponseBody()) {

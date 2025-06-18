@@ -1,11 +1,11 @@
 /**
  * Copyright SOURCEPARK GmbH 2021. Alle Rechte vorbehalten.
- *
+ * <p>
  * SOURCEPARK GmbH Gesellschaft fuer Softwareentwicklung
- *
+ * <p>
  * Hohenzollerndamm 150 Haus 7a
  * 14199 Berlin
- *
+ * <p>
  * Tel.:   +49 (0) 30 / 39 80 68 30
  * Fax:    +49 (0) 30 / 39 80 68 39
  * e-mail: kontakt@sourcepark.de
@@ -14,8 +14,13 @@
 package de.sourcepark.synaptic.testrunner;
 
 import org.apache.commons.cli.*;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,15 +35,36 @@ public class TestRunner {
     private static int bindPort = 8000;
     private static String dnsServerName = "localhost";
     private static List<String> platforms = List.of("k8s");
-    private final static Logger LOG = LogManager.getLogger(TestRunner.class);
+
 
     private void registerTestRunner() {
 
     }
 
+    public static void init() {
+        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+        builder.setStatusLevel(Level.INFO);
+        builder.setConfigurationName("DefaultLogger");
+
+        // Console Appender
+        builder.add(builder.newAppender("Console", "CONSOLE")
+                .addAttribute("target", org.apache.logging.log4j.core.appender.ConsoleAppender.Target.SYSTEM_OUT)
+                .add(builder.newLayout("PatternLayout")
+                        .addAttribute("pattern", "[%d{HH:mm:ss}] [%t] %-5level %logger{36} - %msg%n")));
+
+        // Root Logger
+        builder.add(builder.newRootLogger(Level.INFO)
+                .add(builder.newAppenderRef("Console")));
+
+        Configurator.initialize(builder.build());
+    }
 
     public static void main(String[] args) throws ParseException {
-        TestrunnerCommandApiServer server=null;
+
+        init();
+        final Logger LOG = LogManager.getLogger(TestRunner.class);
+
+        TestrunnerCommandApiServer server = null;
         MonitoringApiClient apiClient = null;
         HeartBeater heartBeater = null;
 
@@ -73,8 +99,7 @@ public class TestRunner {
         }
         if (cmd.hasOption("i")) {
             identity = cmd.getOptionValue("i");
-        }
-        else {
+        } else {
             identity = UUID.randomUUID().toString();
         }
         if (cmd.hasOption("u")) {
@@ -103,7 +128,7 @@ public class TestRunner {
         }
 
 
-            try {
+        try {
             DataBox.getInstance().setTestRunnerIdentity(identity)
                     .setTestStatus("IDLE")
                     .setHeartbeatSequence(0)
@@ -114,7 +139,7 @@ public class TestRunner {
             server.start();
             apiClient = new MonitoringApiClient(guiServerUrl);
             if (!apiClient.registerRunner(identity, "http://" + dnsServerName + ":" + bindPort, platforms)) {
-                LOG.error("Failed to register testrunner at "+ guiServerUrl);
+                LOG.error("Failed to register testrunner at " + guiServerUrl);
                 return;
             }
             apiClient.join();
