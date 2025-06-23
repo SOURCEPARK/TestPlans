@@ -33,6 +33,8 @@ public class TestrunnerCommandApiServer {
         server.createContext("/restart-test", new RestartTestHandler());
         server.createContext("/stop-test", new StopTestHandler());
         server.createContext("/test-status", new TestStatusHandler());
+        server.createContext("/heartbeat", new HeartbeatHandler());
+
         System.out.println("Is running on " + address + ":" + port);
         server.setExecutor(null);
     }

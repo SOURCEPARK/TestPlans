@@ -127,13 +127,14 @@ public class TestRunner {
             DataBox.getInstance().setGitCheckoutFolder(cmd.getOptionValue("g"));
         }
 
-
+        LOG.info("Testrunner started with identity: " + identity);
         try {
             DataBox.getInstance().setTestRunnerIdentity(identity)
                     .setTestStatus("IDLE")
                     .setHeartbeatSequence(0)
                     .setHeartbeatInterval(heartbeatInterval)
-                    .setGuiServerUrl(guiServerUrl);
+                    .setGuiServerUrl(guiServerUrl)
+                    .setStartTime(System.currentTimeMillis());
 
             server = new TestrunnerCommandApiServer(bindAddress, bindPort);
             server.start();
