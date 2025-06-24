@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Tools {
 
-    private static final Logger logger = LogManager.getLogger(MonitoringApiClient.class);
+    private static final Logger LOG = LogManager.getLogger(Tools.class);
     /**
      * Helper method to send POST requests to the API.
      *
@@ -47,6 +47,7 @@ public class Tools {
         request.setHeader("Content-Type", "application/json");
 
         String jsonPayload = objectMapper.writeValueAsString(payload);
+        LOG.info("Sending payload: " + AbstractHandler.prettyPrintJsonString(jsonPayload));
         request.setEntity(new StringEntity(jsonPayload));
 
         HttpResponse response = httpClient.execute(request);

@@ -94,7 +94,7 @@ public class ExecuterThread extends Thread {
 
 
     private String runProcess(List<String> commandLine, boolean hasBinaryOutput) throws IOException, InterruptedException {
-
+        PROCESS_RUNNING = true;
         StringBuilder cl = new StringBuilder();
         StringBuilder tempResult = new StringBuilder();
         String result;
@@ -155,8 +155,11 @@ public class ExecuterThread extends Thread {
                 exitCode = process.exitValue();
                 if (exitCode != 0) {
                     DataBox.getInstance().setTestStatus("FAILED");
+                    DataBox.getInstance().setTestRunnerStatus("IDLE");
+                    LOG.error("K8s process terminated with exit code: " + exitCode);
                 } else {
                     DataBox.getInstance().setTestStatus("COMPLETED");
+                    DataBox.getInstance().setTestRunnerStatus("IDLE");
                 }
                 isProcessRunning = false;
             } catch (IllegalThreadStateException ex) {
@@ -195,6 +198,7 @@ public class ExecuterThread extends Thread {
             LOG.error("Unexpected exception.", e);
             DataBox.getInstance().setTestStatus("FAILED");
         } finally {
+            LOG.info("Test executor thread completed. Result is: " + message);
             DataBox.getInstance().setTestProgress(1.0);
             try {
                 sendProgressPostRequest(message);
