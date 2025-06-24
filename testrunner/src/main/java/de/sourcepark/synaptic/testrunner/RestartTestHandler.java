@@ -42,11 +42,13 @@ class RestartTestHandler extends AbstractHandler implements HttpHandler {
                 sendJsonResponse(exchange, 404, "{\"errortext\":\"Test ["+testRunId+"] nicht gefunden\"," +
                         "\"errorcode\":\"404\"," +
                         "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
+                        "\"errortext\":\"Test restart failed. TestRunID ["+testRunId+"] ist nicht vorhanden.\"," +
                         "\"message\":\"Test restart failed\"}");
             }
         } else {
             sendJsonResponse(exchange, 500, "{\"errortext\":\"Unsupported request type\"," +
                     "\"errorcode\":\"500\"," +
+                    "\"errortext\":\"Wrong method. This endpoint only supports GET.\"," +
                     "\"testRunId\":\" N/A \"," +
                     "\"message\":\"Test restart failed\"}");
         }
