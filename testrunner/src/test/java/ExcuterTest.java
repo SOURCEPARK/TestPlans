@@ -60,7 +60,7 @@ public class ExcuterTest {
                             .withHeader("Content-Type", "application/json")
                             .withBody("{\"status\":\"success\"}")));
 
-            ExecuterThread executerThread = new ExecuterThread("k8s", "TP00001/FSS-F-0001-RC");
+            ExecuterThread executerThread = new ExecuterThread("k8s", "TP00001/FSS-F-0001-RC", true);
             executerThread.start();
             executerThread.join();
         } catch (InterruptedException e) {

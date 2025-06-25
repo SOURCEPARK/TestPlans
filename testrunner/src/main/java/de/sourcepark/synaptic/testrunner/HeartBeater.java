@@ -13,6 +13,9 @@
  */
 package de.sourcepark.synaptic.testrunner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,62 +30,72 @@ public class HeartBeater extends Thread {
         this.heartbeatInterval = heartbeatInterval;
     }
 
-    /**
-     * Sends a heartbeat to the monitoring API.
-     *
-     * @param timestamp     Timestamp of the heartbeat
-     * @param runnerId      ID of the testrunner
-     * @param status        Current status of the testrunner (RUNNING, IDLE, ERROR)
-     * @param sequence      Sequence number of the heartbeat
-     * @param uptimeSeconds Uptime of the testrunner in seconds (optional)
-     * @return true if the heartbeat was successfully sent, false otherwise
-     */
-    public boolean sendHeartbeat(OffsetDateTime timestamp, String runnerId, String status,
-                                 int sequence, Integer uptimeSeconds) {
-        try {
-            String testRunId = DataBox.getInstance().getTestRunId();
-            String testrunnerStatus = DataBox.getInstance().getTestRunnerStatus();
-            Map<String, Object> heartbeat = null;
-            if (!testRunId.equals("NOT_YET_SET")) {
-                if (testrunnerStatus.equals("RUNNING")) {
-                    Long elapsedSeconds = ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
-                    heartbeat = Map.ofEntries(
-                            Map.entry("timestamp", timestamp.toString()),
-                            Map.entry("runnerId", runnerId),
-                            Map.entry("status", status),
-                            Map.entry("sequence", sequence),
-                            Map.entry("uptimeSeconds", uptimeSeconds != null ? uptimeSeconds : 0),
-                            Map.entry("testRunId", DataBox.getInstance().getTestRunId()),
-                            Map.entry("testName", DataBox.getInstance().getTestName()),
-                            Map.entry("testStatus", DataBox.getInstance().getTestStatus()),
-                            Map.entry("startTime", DataBox.getInstance().getStartTime()),
-                            Map.entry("progress", DataBox.getInstance().getTestProgress()),
-                            Map.entry("message", "Test is running..."),
-                            Map.entry("elapsedSeconds", elapsedSeconds)
-                    );
-                } else if (testrunnerStatus.equals("IDLE")) {
-                    heartbeat = Map.ofEntries(
-                            Map.entry("timestamp", timestamp.toString()),
-                            Map.entry("runnerId", runnerId),
-                            Map.entry("status", status),
-                            Map.entry("sequence", sequence),
-                            Map.entry("testRunId", DataBox.getInstance().getTestRunId()),
-                            Map.entry("testName", DataBox.getInstance().getTestName()),
-                            Map.entry("testStatus", DataBox.getInstance().getTestStatus()),
-                            Map.entry("uptimeSeconds", uptimeSeconds != null ? uptimeSeconds : 0)
-                    );
-                }
-            } else {
+    protected static String getHeartbeatJSON() throws JsonProcessingException {
+        String testRunId = DataBox.getInstance().getTestRunId();
+        String testrunnerStatus = DataBox.getInstance().getTestRunnerStatus();
+        OffsetDateTime timestamp = OffsetDateTime.now();
+        String runnerId = DataBox.getInstance().getTestRunnerIdentity();
+        String status = DataBox.getInstance().getTestRunnerStatus();
+        int sequence = (int) DataBox.getInstance().getHeartbeatSequence();
+        int uptimeSeconds = (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
+
+
+        Map<String, Object> heartbeat = null;
+        if (!testRunId.equals("NOT_YET_SET")) {
+            if (testrunnerStatus.equals("RUNNING")) {
+                Long elapsedSeconds = ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
                 heartbeat = Map.ofEntries(
                         Map.entry("timestamp", timestamp.toString()),
                         Map.entry("runnerId", runnerId),
                         Map.entry("status", status),
                         Map.entry("sequence", sequence),
-                        Map.entry("uptimeSeconds", uptimeSeconds != null ? uptimeSeconds : 0)
+                        Map.entry("uptimeSeconds", uptimeSeconds),
+                        Map.entry("testRunId", DataBox.getInstance().getTestRunId()),
+                        Map.entry("testName", DataBox.getInstance().getTestName()),
+                        Map.entry("testStatus", DataBox.getInstance().getTestStatus()),
+                        Map.entry("startTime", DataBox.getInstance().getStartTime()),
+                        Map.entry("progress", DataBox.getInstance().getTestProgress()),
+                        Map.entry("message", DataBox.getInstance().getTestMessage()),
+                        Map.entry("elapsedSeconds", DataBox.getInstance().getElapsedSeconds())
+                );
+            } else if (testrunnerStatus.equals("IDLE")) {
+                heartbeat = Map.ofEntries(
+                        Map.entry("timestamp", timestamp.toString()),
+                        Map.entry("runnerId", runnerId),
+                        Map.entry("status", status),
+                        Map.entry("sequence", sequence),
+                        Map.entry("testRunId", DataBox.getInstance().getTestRunId()),
+                        Map.entry("testName", DataBox.getInstance().getTestName()),
+                        Map.entry("testStatus", DataBox.getInstance().getTestStatus()),
+                        Map.entry("uptimeSeconds", uptimeSeconds)
                 );
             }
+        } else {
+            heartbeat = Map.ofEntries(
+                    Map.entry("timestamp", timestamp.toString()),
+                    Map.entry("runnerId", runnerId),
+                    Map.entry("status", status),
+                    Map.entry("sequence", sequence),
+                    Map.entry("uptimeSeconds", uptimeSeconds)
+            );
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.writeValueAsString(heartbeat);
+    }
 
-            return Tools.sendPostRequest("/test-runner/heartbeat/" + runnerId, heartbeat);
+
+    /**
+     * Sends a heartbeat to the monitoring API.
+     *
+
+     * @return true if the heartbeat was successfully sent, false otherwise
+     */
+    public boolean sendHeartbeat() {
+        try {
+
+            String runnerId = DataBox.getInstance().getTestRunnerIdentity();
+            return Tools.sendPostRequest("/test-runner/heartbeat/" + runnerId, HeartBeater.getHeartbeatJSON());
         } catch (Exception e) {
             LOG.error("Failed to send heartbeat", e);
             return false;
@@ -99,11 +112,8 @@ public class HeartBeater extends Thread {
                     // Sleep for 1 second
                     DataBox.getInstance().setHeartbeatTime(System.currentTimeMillis());
                     DataBox.getInstance().setHeartbeatSequence(DataBox.getInstance().getHeartbeatSequence() + 1);
-                    if (!sendHeartbeat(OffsetDateTime.now(), DataBox.getInstance().getTestRunnerIdentity(),
-                            DataBox.getInstance().getTestRunnerStatus(),
-                            (int) DataBox.getInstance().getHeartbeatSequence(),
-                            (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000))) {
-                        LOG.info("Failed to send heartbeat. Stopping heartbeat thread.");
+                    if (!sendHeartbeat()) {
+                        LOG.info("Failed to send heartbeat.");
                         //return;
                     }
                     Thread.sleep(heartbeatInterval * 1000);

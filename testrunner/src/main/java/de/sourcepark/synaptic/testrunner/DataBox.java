@@ -23,6 +23,8 @@ public class DataBox {
     private String testRunnerStatus = "IDLE";
     private String testRunId = "NOT_YET_SET";
     private String testName = "NOT_YET_SET";
+    private String testMessage = "";
+    private int elapsedSeconds = 0;
     private long testStartTime = 0;
     private double testProgress = 0.0;
     private String testErrorcode;
@@ -212,5 +214,21 @@ public class DataBox {
 
     public void setTestRunnerStatus(String testRunnerStatus) {
         this.testRunnerStatus = testRunnerStatus;
+    }
+
+    public String getTestMessage() {
+        return testMessage;
+    }
+
+    public void setTestMessage(String testMessage) {
+        this.testMessage = testMessage;
+    }
+
+    public int getElapsedSeconds() {
+        return elapsedSeconds;
+    }
+
+    public void setElapsedSeconds(int elapsedSeconds) {
+        this.elapsedSeconds = elapsedSeconds;
     }
 }

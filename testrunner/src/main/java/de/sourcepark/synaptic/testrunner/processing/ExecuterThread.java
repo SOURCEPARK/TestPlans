@@ -32,16 +32,23 @@ public class ExecuterThread extends Thread {
     public static String KUBSYNNET_COMMAND = "/usr/bin/kubsynnet";
     private static boolean PROCESS_RUNNING = true;
 
+    private static String REPORT_DUMMY="## Testbericht für [TP-00003-FSS-F-00001-RCD]\n" +
+            "\n" +
+            "### Testlauf vom: 25.06.2025 10:32 - 11:19\n" +
+            "\n" +
+            "**Ergebnis:** Der Test wurde erfolgreich beendet es konnten keine Abweichungen festgestellt werden.";
+
     private final static Logger LOG = LogManager.getLogger(ExecuterThread.class);
     private final String testDataFolder;
     private final String platform;
     private final ProgressIndicator progressIndicator;
+    private final boolean creationMode;
 
-
-    public ExecuterThread(String platform, String testDataFolder) {
+    public ExecuterThread(String platform, String testDataFolder, boolean creationMode) {
         super("ExecuterThread");
         this.testDataFolder = testDataFolder;
         this.platform = platform;
+        this.creationMode = creationMode;
         switch(platform) {
             case "k8s":
                 this.progressIndicator = new K8sProgressIndicator();
@@ -55,17 +62,20 @@ public class ExecuterThread extends Thread {
         PROCESS_RUNNING = processRunning;
     }
 
-    private List<String> createk8sCommand() {
+    private List<String> createk8sCommand(boolean creationMode) {
         //TODO: renew licence pack if needed
 
         //TODO: Start kubsynnet
         String dataFolder = DataBox.getInstance().getGitCheckoutFolder()+testDataFolder;
-        String licenceKey = System.getenv("LICENCE_KEY");
-        if (licenceKey == null) {
-            licenceKey="NOT_SET";
+        if (creationMode) {
+            String licenceKey = System.getenv("LICENCE_KEY");
+            if (licenceKey == null) {
+                licenceKey = "NOT_SET";
+            }
+            return List.of(KUBSYNNET_COMMAND, "create", "-t", dataFolder, "-H", "localhost", "-x", licenceKey);
+        } else {
+            return List.of(KUBSYNNET_COMMAND, "purge", "-t", dataFolder);
         }
-        return List.of(KUBSYNNET_COMMAND, "create", "-t", dataFolder, "-H", "localhost", "-x", licenceKey);
-
     }
 
     private void sendProgressPostRequest(String message) throws IOException {
@@ -80,7 +90,10 @@ public class ExecuterThread extends Thread {
                 "message", message,
                 "progress", DataBox.getInstance().getTestProgress()
         );
-        Tools.sendPostRequest("/test-status", params);
+        DataBox.getInstance().setElapsedSeconds(elapsedSeconds);
+        DataBox.getInstance().setTestMessage(message);
+
+//        Tools.sendPostRequest("/test-status", params);
     }
 
     private void sendProgress(String processOutput) throws IOException {
@@ -177,6 +190,9 @@ public class ExecuterThread extends Thread {
             LOG.error("Process does not terminate. Will try to kill the process now.");
             process.destroy();
         }
+        Map<String, Object> params = Map.of("report", REPORT_DUMMY);
+        Tools.sendPostRequest("/test-runner/"+DataBox.getInstance().getTestRunnerIdentity()+"/complete", params);
+
         LOG.info("Process completed: " + tempResult.toString());
         return result;
     }
@@ -186,9 +202,14 @@ public class ExecuterThread extends Thread {
     public void run() {
         String message ="Test executor thread completed.";
         try {
+            if (creationMode) {
+                List<String> commandLine = createk8sCommand(true);
+                runProcess(commandLine, false);
+            } else {
+                List<String> commandLine = createk8sCommand(false);
+                runProcess(commandLine, false);
+            }
 
-            List<String> commandLine = createk8sCommand();
-            runProcess(commandLine, false);
         } catch (InterruptedException e) {
             LOG.error("Thread interrupted.", e);
             message = "Thread interrupted.";

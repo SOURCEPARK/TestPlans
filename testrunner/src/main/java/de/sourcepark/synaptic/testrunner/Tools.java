@@ -47,15 +47,29 @@ public class Tools {
         request.setHeader("Content-Type", "application/json");
 
         String jsonPayload = objectMapper.writeValueAsString(payload);
-        LOG.info("Sending payload: " + AbstractHandler.prettyPrintJsonString(jsonPayload));
-        request.setEntity(new StringEntity(jsonPayload));
+
+        return sendPostRequest(endpoint, jsonPayload);
+    }
+    public static boolean sendPostRequest(String endpoint, String payload) throws IOException {
+
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost request = new HttpPost(DataBox.getInstance().getGuiServerUrl() + endpoint);
+        request.setHeader("Content-Type", "application/json");
+
+        LOG.info("Sending payload: " + AbstractHandler.prettyPrintJsonString(payload));
+        request.setEntity(new StringEntity(payload));
 
         HttpResponse response = httpClient.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
 
         // Ensure the response entity is consumed
         EntityUtils.consume(response.getEntity());
-
+        if (statusCode >= 400) {
+            LOG.error("API request failed with status code: " + statusCode+ " response body: " + response.getEntity());
+        }
         return statusCode <= 399;
     }
+
+
+
 }

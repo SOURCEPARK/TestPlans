@@ -82,7 +82,8 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
 
 
                 //TODO: Run external testing thread
-                ExecuterThread executerThread = new ExecuterThread(request.platforms[0], parts[1]);
+                ExecuterThread executerThread = new ExecuterThread(request.platforms[0], parts[1], true);
+
                 executerThread.start();
 
                 System.out.println("/start-test aufgerufen. Body: " + body);

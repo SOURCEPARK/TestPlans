@@ -30,39 +30,8 @@ class HeartbeatHandler extends AbstractHandler implements HttpHandler {
             String query = exchange.getRequestURI().getPath();
             System.out.println("/heartbeat requested. Query: " + query);
 
-            String runId = DataBox.getInstance().getTestRunId();
-            if (query.length() > 13) {
-                runId = query.substring(13);
-            }
-//            else {
-//                return;
-//                sendJsonResponse(exchange, 200, "\"message\":\"OK\"");
-//                return;
-//            }
-
-            int elapsedSeconds = (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000);
-
-            if (runId != null && runId.equals(DataBox.getInstance().getTestRunId())) {
-                DataBox.getInstance().setHeartbeatTime(System.currentTimeMillis());
-                DataBox.getInstance().setHeartbeatSequence(DataBox.getInstance().getHeartbeatSequence() + 1);
-                String response = "{\"timestamp\":\"" + OffsetDateTime.now() +
-                        "\",\"runnerId\":\"" + DataBox.getInstance().getTestRunnerIdentity() +
-                        "\",\"status\":\"" + DataBox.getInstance().getTestRunnerStatus() +
-                        "\",\"sequence\":" + DataBox.getInstance().getHeartbeatSequence() +
-                        "\",\"uptimeSeconds\":" + (int) ((System.currentTimeMillis() - DataBox.getInstance().getStartTime()) / 1000) +
-                        "\",\"testRunId\":\"" + DataBox.getInstance().getTestRunId() +
-                        "\",\"testName\":\"" + DataBox.getInstance().getTestName() +
-                        "\",\"testStatus\":\"" + DataBox.getInstance().getTestStatus() +
-                        "\",\"startTime\":\"" + DataBox.getInstance().getStartTime() +
-                        "\",\"progress\":" + DataBox.getInstance().getTestProgress() +
-                        "\",\"elapsedSeconds\":" + elapsedSeconds + "\"}";
-
-                sendJsonResponse(exchange, 200, response);
-            }
-            else {
-                sendJsonResponse(exchange, 404, "{\"error\":\"Test run [" + runId
-                        + "] not found, expected start or [" + DataBox.getInstance().getTestRunId() + "]\"}");
-            }
+            String response = HeartBeater.getHeartbeatJSON();
+            sendJsonResponse(exchange, 200, response);
 
         } else {
             sendJsonResponse(exchange, 400, "{\"error\":\"Unhandled request\"}");

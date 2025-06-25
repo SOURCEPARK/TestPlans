@@ -35,13 +35,16 @@ class StopTestHandler extends AbstractHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             String testRunId = exchange.getRequestURI().getPath().substring(11);
-            if (!testRunId.equals(DataBox.getInstance().getTestRunId())) {
-                LOG.info("Unknown test requested for stop. Unknown tests are always in status stopped.");
-            }
             ExecuterThread.setProcessRunning(false);
             DataBox.getInstance().setTestStatus("STOPPED");
             String response = "{\"testRunId\":\"" + DataBox.getInstance().getTestRunId() +
                     "\",\"message\":\"Test gestoppt\"}";
+
+            if (!testRunId.equals(DataBox.getInstance().getTestRunId())) {
+                LOG.info("Unknown test requested for stop. Unknown tests are always in status stopped.");
+            } else {
+                ExecuterThread exc = new ExecuterThread("k8s", DataBox.getInstance().getTestName(), false);
+            }
             sendJsonResponse(exchange, 200, response);
 
         } else {
