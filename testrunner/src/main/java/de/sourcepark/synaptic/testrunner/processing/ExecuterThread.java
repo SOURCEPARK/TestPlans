@@ -100,9 +100,9 @@ public class ExecuterThread extends Thread {
 
         //TODO: parsing and translating kubsynnet output to testrunner progress data
         TestState ts = progressIndicator.parse(processOutput);
-        if (ts != null && ts.progress <= 1.0 ) {
-            sendProgressPostRequest(ts.message);
-        }
+        DataBox.getInstance().setTestProgress(ts.progress);
+        DataBox.getInstance().setTestStatus(ts.status);
+        DataBox.getInstance().setTestMessage(ts.message);
     }
 
 

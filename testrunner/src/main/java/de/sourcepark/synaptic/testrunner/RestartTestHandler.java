@@ -50,6 +50,7 @@ class RestartTestHandler extends AbstractHandler implements HttpHandler {
 
                 String uuid = UUID.randomUUID().toString();
                 DataBox.getInstance().setTestStatus("RUNNING");
+                DataBox.getInstance().setTestRunnerStatus("RUNNING");
                 DataBox.getInstance().setTestRunId(uuid);
 
                 String response = "{\"testRunId\":\"" + uuid + "\"," +
@@ -57,11 +58,11 @@ class RestartTestHandler extends AbstractHandler implements HttpHandler {
                 sendJsonResponse(exchange, 200, response);
             }
             else {
-                sendJsonResponse(exchange, 404, "{\"errortext\":\"Test ["+testRunId+"] nicht gefunden\"," +
+                sendJsonResponse(exchange, 404, "{\"errortext\":\"Test ["+testRunId+"] not found.\"," +
                         "\"errorcode\":\"404\"," +
                         "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
                         "\"errortext\":\"Test restart failed. TestRunID ["+testRunId+"] is not known to this instance.\"," +
-                        "\"message\":\"Test restart failed\"}");
+                        "\"message\":\"Test restart failed. TestRunID ["+testRunId+"] is not known to this instance.\"}");
             }
         } else {
             sendJsonResponse(exchange, 500, "{\"errortext\":\"Unsupported request type\"," +

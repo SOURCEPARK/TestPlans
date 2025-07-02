@@ -54,7 +54,7 @@ public class HeartBeater extends Thread {
                         Map.entry("testName", DataBox.getInstance().getTestName()),
                         Map.entry("testStatus", DataBox.getInstance().getTestStatus()),
                         Map.entry("startTime", DataBox.getInstance().getStartTime()),
-                        Map.entry("progress", DataBox.getInstance().getTestProgress()),
+                        Map.entry("progress", Math.round(DataBox.getInstance().getTestProgress())),
                         Map.entry("message", DataBox.getInstance().getTestMessage()),
                         Map.entry("elapsedSeconds", DataBox.getInstance().getElapsedSeconds())
                 );
