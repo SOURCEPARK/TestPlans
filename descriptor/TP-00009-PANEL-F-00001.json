@@ -3,9 +3,9 @@
         "platforms": [
             "k8s"
         ],
-        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00009/PANEL-F-00001",
+        "testplan": "https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/#/TP-00000/PANEL-F-00001",
         "maxExecutionTime": "120",
-        "name": "TP-00009-PANEL-F-00001",
+        "name": "TP-00000-PANEL-F-00001",
         "id": "e50fc689-e85d-40b1-9ae0-886d04d69ede"
     }
 }
