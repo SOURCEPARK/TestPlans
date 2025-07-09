@@ -30,7 +30,7 @@ public class DataBox {
     private String testErrorcode;
     private String testErrortext;
     private String gitCheckoutFolder="/tmp";
-
+    private String gitUrl="";
 
     private String guiServerUrl;
     private String password;
@@ -230,5 +230,13 @@ public class DataBox {
 
     public void setElapsedSeconds(int elapsedSeconds) {
         this.elapsedSeconds = elapsedSeconds;
+    }
+
+    public String getGitUrl() {
+        return gitUrl;
+    }
+
+    public void setGitUrl(String gitUrl) {
+        this.gitUrl = gitUrl;
     }
 }

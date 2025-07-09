@@ -30,6 +30,30 @@ class RestartTestHandler extends AbstractHandler implements HttpHandler {
         if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             String testRunId = exchange.getRequestURI().getPath().substring(14);
             if (testRunId.equals(DataBox.getInstance().getTestRunId())) {
+
+                GitHandler gitHandler = new GitHandler();
+                boolean checkoutSuccess = false;
+
+                LOG.info("TestPlan: " + DataBox.getInstance().getGitUrl());
+
+                // HTTP authentication (username/password)
+                checkoutSuccess = gitHandler.checkoutRepositoryWithCredentials(
+                        DataBox.getInstance().getGitUrl(),
+                        DataBox.getInstance().getGitCheckoutFolder(),
+                        DataBox.getInstance().getUsername(),
+                        DataBox.getInstance().getPassword()
+                );
+
+                if (!checkoutSuccess) {
+                    System.out.println("Failed to checkout repository");
+                    sendJsonResponse(exchange, 500, "{\"error\":\"Failed to checkout repository\"}");
+                    sendJsonResponse(exchange, 501, "{\"errortext\":\"Failed to checkout repository.\"," +
+                            "\"errorcode\":\"501\"," +
+                            "\"testRunId\":\"" + DataBox.getInstance().getTestRunId() + "\"," +
+                            "\"message\":\"\"Test start failed. Unable to checkout repository\"}");
+                    return;
+                }
+
                 //TODO: Stop runnning test
                 if (DataBox.getInstance().getTestStatus().equals("RUNNING")) {
                     ExecuterThread.setProcessRunning(false);

@@ -59,6 +59,7 @@ public class StartTestHandler extends AbstractHandler implements HttpHandler {
                 LOG.info("TestPlan: " + request.testPlan);
                 String parts[] = request.testPlan.split("#");
 
+                DataBox.getInstance().setGitUrl(parts[0]);
 
                 // HTTP authentication (username/password)
                 checkoutSuccess = gitHandler.checkoutRepositoryWithCredentials(
